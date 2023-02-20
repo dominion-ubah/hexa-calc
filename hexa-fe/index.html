@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <title>Hexa Test</title>
+  </head>
+  <body class="has-background-info-light" style="height:100vh">
+    <section class="section">
+      <div class="container">
+          <center>
+              <h1 class="title "> Hexa Farms Gini</h1>
+              <p class="subtitle">Hello, Ask Gini your Math Questions here</p>
+      
+              <div class="card">
+                <div class="card-content">
+                  <div class="field">
+                    <label class="label">Equation</label>
+                    <div class="control">
+                      <input
+                        class="input text-center"
+                        id="expr"
+                        type="text"
+                        placeholder="Enter your Equation"
+                      />
+                    </div>
+                  </div>
+      
+                  <div class="field is-grouped is-flex is-justify-content-center">
+                    <div class="control">
+                      <button class="button is-info ml-auto" onclick="sendEqn()">
+                        Calculate
+                      </button>
+                    </div>
+                  </div>
+      
+                  <div class="columns my-5">
+                    <progress
+                      id="prog"
+                      class="progress is-small is-primary is-hidden"
+                      max="100"
+                    >
+                      15%
+                    </progress>
+                  </div>
+                  <div class="columns my-5">
+                    <div
+                      class="column is-three-fifths is-offset-one-fifth has-background-light"
+                    >
+                      <div id="answer"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </center>
+      </div>
+    </section>
+    <script type="text/javascript">
+      var apiUrl = "http://api.mathjs.org/v4/?expr=";
+      let answer = document.getElementById("answer");
+      answer.innerHTML = "Waiting for your calculation 😊";
+
+      function sendEqn() {
+        prog.classList.remove("is-hidden");
+
+        let input = document.getElementById("expr").value,
+          query = apiUrl + encodeURIComponent(input);
+
+        fetch(query)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            answer.innerHTML = "The answer is: " + data?.toString();
+            prog.classList.add("is-hidden");
+          })
+          .catch((err) => {
+            answer.innerHTML =
+              "An Error Occured: Please enter a valid equation for me to solve.";
+            prog.classList.add("is-hidden");
+          });
+      }
+    </script>
+  </body>
+</html>
